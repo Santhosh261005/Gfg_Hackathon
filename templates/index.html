@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section class="customer-profile">
+        <h2>Welcome back, {{ customer[1] }}!</h2>
+        <p>Personalized recommendations based on your preferences in {{ customer[5] }}.</p>
+    </section>
+    
+    {% if recent_behavior %}
+    <section class="recent-activity">
+        <h3>Your Recent Activity</h3>
+        <div class="activity-grid">
+            {% for product in recent_behavior %}
+            <div class="activity-item">
+                <p>Viewed <strong>{{ product[0] }}</strong> ({{ product[1] }})</p>
+                <small>{{ product[3] }}</small>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+    
+    <section class="recommendations">
+        <h3>Recommended For You</h3>
+        <div class="product-grid">
+            {% for product in recommendations %}
+            <div class="product-card">
+                <img src="{{ product[5] }}" alt="{{ product[1] }}" class="product-image">
+                <h4>{{ product[1] }}</h4>
+                <p class="category">{{ product[2] }}</p>
+                <p class="price">${{ "%.2f"|format(product[3]) }}</p>
+                <p class="scores">
+                    <span class="popularity" title="Popularity">P: {{ "%.2f"|format(product[6]) }}</span>
+                    <span class="trend" title="Trend">T: {{ "%.2f"|format(product[7]) }}</span>
+                    <span class="relevance" title="Relevance">R: {{ "%.2f"|format(product[8]) }}</span>
+                </p>
+                <a href="{{ url_for('product_detail', product_id=product[0]) }}" class="btn">View Details</a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}
